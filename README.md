@@ -1,4 +1,4 @@
-<p align="center">
+<p text-align="center">
     <h1> classi. </h1>
     <h4> Andrew. Richard. Perry. Tim. Oskar. Ben </h4>
     <img src="./Assets/classi.png">
