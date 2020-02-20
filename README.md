@@ -1,7 +1,7 @@
-<p text-align="center">
-    <h1> classi. </h1>
-    <h4> Andrew. Richard. Perry. Tim. Oskar. Ben </h4>
-    <img src="./Assets/classi.png">
+<p align="center">
+    <h1><u> classi. </u></h1>
+    <h4><i> Andrew. Richard. Perry. Tim. Oskar. Ben </i></h4>
+    <img style="align: center" src="./Assets/classi.png">
 </p>
 
 ### What is classi?
