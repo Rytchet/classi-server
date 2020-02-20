@@ -1,7 +1,7 @@
 <p align="center">
-    # classi. 
-    ## Group 1 - Andrew, Richard, Perry, Tim, Oskar, Ben
-    ![Classi Logo](./Assets/classi.png)
+    <h1> classi. </h1>
+    <h4> Andrew. Richard. Perry. Tim. Oskar. Ben </h4>
+    <img src="./Assets/classi.png">
 </p>
 
 ### What is classi?
