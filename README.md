@@ -6,16 +6,13 @@
     <p>
         classi is a new way to find the classic cars you have always desired. classi provides users with a way to add, view and contact potential customers/owners about their vehicles. classi consists of both a fully functional website and iOS app.
     </p>
-
     <h4> How do i get started? </h4>
     <ul>
         <li> Create an account on the website or the app </li>
         <li> Log in </li>
         <li> You are in! </li>
     </ul>
-
     <p><i> enjoy what classi has to offer!!! </i><p>
-
     <h4> Project Tech Stack </h4>
     <p> 
         Our Tech Stack consists of different aspects for Mobile and Web. Our one consistency throughout is our MongoDB cloud-database which makes use of JSON objects.
