@@ -1,7 +1,7 @@
 # classi. 
 ## Group 1 - Andrew, Richard, Perry, Tim, Oskar, Ben
 
-[classi logo image](./Assets/classi.png)
+![Classi Logo](./Assets/classi.png)
 
 ### What is classi?
 
