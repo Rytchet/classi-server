@@ -1,7 +1,8 @@
-# classi. 
-## Group 1 - Andrew, Richard, Perry, Tim, Oskar, Ben
-
-![Classi Logo](./Assets/classi.png)
+<p align="center">
+    # classi. 
+    ## Group 1 - Andrew, Richard, Perry, Tim, Oskar, Ben
+    ![Classi Logo](./Assets/classi.png)
+</p>
 
 ### What is classi?
 
@@ -13,7 +14,7 @@ classi is a new way to find the classic cars you have always desired. classi pro
 - Log in
 - You are in!
 
-*enjoy what classi has to offer*
+*enjoy what classi has to offer!!!*
 
 ### Project Tech Stack
 
