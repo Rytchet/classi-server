@@ -1,27 +1,31 @@
-<p align="center">
-    <h1><u> classi. </u></h1>
+<div>
+    <h1> classi. </h1>
     <h4><i> Andrew. Richard. Perry. Tim. Oskar. Ben </i></h4>
-    <img style="align: center" src="./Assets/classi.png">
-</p>
+    <img style="align: center" src="./Assets/classi.png"/>
+    <h4> What is classi? </h4>
+    <p>
+        classi is a new way to find the classic cars you have always desired. classi provides users with a way to add, view and contact potential customers/owners about their vehicles. classi consists of both a fully functional website and iOS app.
+    </p>
 
-### What is classi?
+    <h4> How do i get started? </h4>
+    <ul>
+        <li> Create an account on the website or the app </li>
+        <li> Log in </li>
+        <li> You are in! </li>
+    </ul>
 
-classi is a new way to find the classic cars you have always desired. classi provides users with a way to add, view and contact potential customers/owners about their vehicles. classi consists of both a fully functional website and iOS app.
+    <p><i> enjoy what classi has to offer!!! </i><p>
 
-### How do i get started?
+    <h4> Project Tech Stack </h4>
+    <p> 
+        Our Tech Stack consists of different aspects for Mobile and Web. Our one consistency throughout is our MongoDB cloud-database which makes use of JSON objects.
+    </p>
+    <ul>
+        <li> MERN (MongoDB, Express, React, Node.js) - Full JavaScript software stack. </li>
+        <li> Swift + Objective-C - Cocoapods used also for dependencies </li>
+    </ul>
+</div>
 
-- Create an account on the website or the app
-- Log in
-- You are in!
-
-*enjoy what classi has to offer!!!*
-
-### Project Tech Stack
-
-Our Tech Stack consists of different aspects for Mobile and Web. Our one consistency throughout is our MongoDB cloud-database which makes use of JSON objects.
-
-* MERN (MongoDB, Express, React, Node.js) - Full JavaScript software stack.
-* Swift + Objective-C - Cocoapods used also for dependencies
 
 
 
