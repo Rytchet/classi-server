@@ -1,0 +1,22 @@
+{
+  "id": "Integer",
+  "title": "String",
+  "price": "Integer",
+  "description": "String",
+  "user": "Integer",
+  "phone": "String",
+  "location": {
+    "city": "String",
+    "region": "String",
+    "lat": "Float",
+    "long": "Float"
+  },
+  "car": {
+    "make": "String",
+    "model": "String",
+    "year": "Integer",
+    "mileage": "Integer"
+  },
+  "creation_date": "Date",
+  "times_viewed": "Integer"
+}
