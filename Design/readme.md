@@ -11,12 +11,18 @@
 ## Retrieve all listings
 
 `GET /listings`
+
 parameters:
-year - Integer - for this year
-decade - Integer - for this decade (in form of 1960, 1970 etc)
-term - String - containing this term in title
-make - String - of this Make
-model - String - of this Model
+
+**year** - Integer - for this year
+
+**decade** - Integer - for this decade (in form of 1960, 1970 etc)
+
+**term** - String - containing this term in title
+
+**make** - String - of this Make
+
+**model** - String - of this Model
 
 ## Delete a listing
 
