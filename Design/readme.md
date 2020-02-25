@@ -12,7 +12,7 @@
 
 `GET /listings`
 
-parameters:
+Parameters:
 
 **year** - Integer - for this year
 
