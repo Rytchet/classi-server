@@ -21,10 +21,8 @@
         <li> MERN (MongoDB, Express, React, Node.js) - Full JavaScript software stack. </li>
         <li> Swift + Objective-C - Cocoapods used also for dependencies </li>
     </ul>
-
     <h4> To run </h4>
-
     <code>npm install</code>
+    <br>
     <code>npm run server</code>
-
 </div>
