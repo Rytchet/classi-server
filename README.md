@@ -23,5 +23,6 @@
     </ul>
     <h4> To run </h4>
     <code>npm install</code>
+    <br>
     <code>npm run server</code>
 </div>
