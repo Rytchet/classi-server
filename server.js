@@ -14,6 +14,7 @@ const uri =
   "mongodb://admin:admin123@classi-shard-00-00-e1uyo.mongodb.net:27017,classi-shard-00-01-e1uyo.mongodb.net:27017,classi-shard-00-02-e1uyo.mongodb.net:27017/test?ssl=true&replicaSet=Classi-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 // Connect to Mongoose
+// TODO: Allow only safe IP's to access the database. Change this in the Security/Network Access section in MongoDB Atlas
 mongoose
   .connect(uri, {
     // These options are for fixing deprecation warnings for mongoose
