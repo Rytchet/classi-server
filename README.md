@@ -14,7 +14,6 @@
     </ul>
     <p><i> enjoy what classi has to offer!!! </i><p>
     <h4> Project Tech Stack </h4>
-    
     <p> 
         Our Tech Stack consists of different aspects for Mobile and Web. Our one consistency throughout is our MongoDB cloud-database which makes use of JSON objects.
     </p>
@@ -22,5 +21,7 @@
         <li> MERN (MongoDB, Express, React, Node.js) - Full JavaScript software stack. </li>
         <li> Swift + Objective-C - Cocoapods used also for dependencies </li>
     </ul>
-
+    <h4> To run </h4>
+    <code>npm install</code>
+    <code>npm run server</code>
 </div>
