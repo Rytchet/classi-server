@@ -1,5 +1,4 @@
 {
-  "id": "Integer",
   "title": "String",
   "price": "Integer",
   "description": "String",
@@ -8,6 +7,7 @@
   "location": {
     "city": "String",
     "region": "String",
+    "postcode": "String",
     "lat": "Float",
     "long": "Float"
   },

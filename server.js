@@ -1,17 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-
-const listings = require("./routes/api/listings");
+const config = require("config");
 
 const app = express();
 
 // Bodyparser Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
-// TODO: Hide this string, and change the admin credentials
-const uri =
-  "mongodb://admin:admin123@classi-shard-00-00-e1uyo.mongodb.net:27017,classi-shard-00-01-e1uyo.mongodb.net:27017,classi-shard-00-02-e1uyo.mongodb.net:27017/test?ssl=true&replicaSet=Classi-shard-0&authSource=admin&retryWrites=true&w=majority";
+// DB Config
+const uri = config.get("mongoURI");
 
 // Connect to Mongoose
 // TODO: Allow only safe IP's to access the database. Change this in the Security/Network Access section in MongoDB Atlas
@@ -26,7 +23,9 @@ mongoose
   .catch(err => console.log(err));
 
 // Use routes
-app.use("/api/listings", listings);
+app.use("/api/listings", require("./routes/api/listings"));
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/auth", require("./routes/api/auth"));
 
 // Run the server on localhost:5000
 const port = process.env.PORT || 5000;

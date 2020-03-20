@@ -1,0 +1,16 @@
+{
+  "name": "String",
+  "email": "String",
+  "password": "String",
+  "description": "String",
+  "phone": "String",
+  "location": {
+    "city": "String",
+    "region": "String",
+    "postcode": "String",
+    "lat": "Float",
+    "long": "Float"
+  },
+  "listingHistory": [{ "id": "String", "date": "Date" }],
+  "searchHistory": [{ "query": "String", "date": "Date" }]
+}

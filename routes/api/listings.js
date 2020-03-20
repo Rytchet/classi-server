@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../../middleware/auth");
 
 // Listings model
 const Listing = require("../../models/Listing");
@@ -15,8 +16,8 @@ router.get("/", (req, res) => {
 
 // @route POST api/listings
 // @desc Create a listing
-// @access Public
-router.post("/", (req, res) => {
+// @access Private
+router.post("/", auth, (req, res) => {
   const newListing = new Listing({
     title: req.body.title,
     price: req.body.price
@@ -27,8 +28,8 @@ router.post("/", (req, res) => {
 
 // @route DELETE api/listings/:id
 // @desc Delete a listing
-// @access Public
-router.delete("/:id", (req, res) => {
+// @access Private
+router.delete("/:id", auth, (req, res) => {
   Listing.findById(req.params.id)
     .then(listing => listing.remove().then(() => res.json({ success: true }))) // Return a 200 OK
     .catch(err => res.status(404).json({ success: false })); // Return 404 Not found;

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
-import { v4 as uuid } from "uuid";
+import { Container, ListGroup, ListGroupItem } from "reactstrap";
 import { connect } from "react-redux";
-import { getListings } from "../actions/listingActions";
+import { getListings, deleteListing } from "../actions/listingActions";
 import PropTypes from "prop-types";
 
 class CarList extends Component {
@@ -15,9 +14,9 @@ class CarList extends Component {
     return (
       <Container>
         <ListGroup>
-          {listings.map(({ id, title }) => (
+          {listings.map(({ _id, title }) => (
             <ListGroupItem>
-              Id: {id} Title: {title}
+              Id: {_id} Title: {title}
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -35,4 +34,6 @@ const mapStateToProps = state => ({
   listing: state.listing
 });
 
-export default connect(mapStateToProps, { getListings })(CarList);
+export default connect(mapStateToProps, { getListings, deleteListing })(
+  CarList
+);

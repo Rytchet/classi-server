@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb://admin:admin123@classi-shard-00-00-e1uyo.mongodb.net:27017,classi-shard-00-01-e1uyo.mongodb.net:27017,classi-shard-00-02-e1uyo.mongodb.net:27017/test?ssl=true&replicaSet=Classi-shard-0&authSource=admin&retryWrites=true&w=majority",
+  "jwtSecret": "classi_secret"
+}
