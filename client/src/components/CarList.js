@@ -1,31 +1,17 @@
 import React, { Component } from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { v4 as uuid } from "uuid";
+import { connect } from "react-redux";
+import { getListings } from "../actions/listingActions";
+import PropTypes from "prop-types";
 
 class CarList extends Component {
-  state = {
-    listings: [
-      {
-        id: uuid(),
-        title: "Title 1"
-      },
-      {
-        id: uuid(),
-        title: "Title 2"
-      },
-      {
-        id: uuid(),
-        title: "Title 3"
-      },
-      {
-        id: uuid(),
-        title: "Title 4"
-      }
-    ]
-  };
+  componentDidMount() {
+    this.props.getListings();
+  }
 
   render() {
-    const { listings } = this.state;
+    const { listings } = this.props.listing;
     return (
       <Container>
         <ListGroup>
@@ -40,4 +26,13 @@ class CarList extends Component {
   }
 }
 
-export default CarList;
+CarList.propTypes = {
+  getListings: PropTypes.func.isRequired,
+  listing: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  listing: state.listing
+});
+
+export default connect(mapStateToProps, { getListings })(CarList);
