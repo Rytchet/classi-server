@@ -28,9 +28,32 @@ router.get("/:id", (req, res) => {
 // @desc Create a listing
 // @access Private
 router.post("/", auth, (req, res) => {
+  const { title, price, description, user_id, phone, email } = req.body;
+
+  // TODO: Figure out how to get the car vars nicely
+
   const newListing = new Listing({
-    title: req.body.title,
-    price: req.body.price
+    title,
+    price,
+    description,
+    // user_id: req.user.id, <- TODO: Do it like this
+    user_id,
+    phone,
+    email,
+    // location: { TODO: Implement the postcode API here
+    //   postcode: req.body.postcode,
+    //   region: req.body.region,
+    //   city: req.body.city,
+    //   lat: req.body.lat,
+    //   long: req.body.long
+    // }
+    car: {
+      make: req.body.car.make,
+      model: req.body.car.model,
+      year: req.body.car.year,
+      mileage: req.body.car.mileage
+    },
+    times_viewed: 0
   });
 
   newListing.save().then(listing => res.json(listing));
