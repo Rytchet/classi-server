@@ -11,7 +11,14 @@ const Listing = require("../../models/Listing");
 router.get("/", (req, res) => {
   Listing.find()
     .sort({ date: -1 }) // Sort by date descending
-    .then(items => res.json(items));
+    .then(listings => res.json(listings));
+});
+
+// @route GET api/listings/:id
+// @desc Get a listing
+// @access Public
+router.get("/:id", (req, res) => {
+  Listing.findById(req.params.id).then(listing => res.json(listing));
 });
 
 // @route POST api/listings

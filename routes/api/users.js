@@ -59,4 +59,20 @@ router.post("/", (req, res) => {
   });
 });
 
+// TODO: Delete this, not secure
+
+// @route GET api/users
+// @desc Get all users
+// @access Public
+router.get("/:id", (req, res) => {
+  User.find().then(users => res.json(users));
+});
+
+// @route GET api/users/:id
+// @desc Get a User
+// @access Public
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id).then(user => res.json(user));
+});
+
 module.exports = router;
