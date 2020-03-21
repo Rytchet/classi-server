@@ -11,14 +11,17 @@ const Listing = require("../../models/Listing");
 router.get("/", (req, res) => {
   Listing.find()
     .sort({ date: -1 }) // Sort by date descending
-    .then(listings => res.json(listings));
+    .then(listings => res.json(listings))
+    .catch(err => res.status(404).json({ err: "No lsitings found" }));
 });
 
 // @route GET api/listings/:id
 // @desc Get a listing
 // @access Public
 router.get("/:id", (req, res) => {
-  Listing.findById(req.params.id).then(listing => res.json(listing));
+  Listing.findById(req.params.id)
+    .then(listing => res.json(listing))
+    .catch(err => res.status(404).json({ err: "Listing not found" }));
 });
 
 // @route POST api/listings
