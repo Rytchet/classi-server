@@ -10,6 +10,55 @@ const ListingSchema = new Schema({
     type: Number,
     required: true
   },
+  description: {
+    type: String
+  },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+    required: true
+  },
+  phone: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  location: {
+    postcode: {
+      type: String,
+      required: true
+    },
+    region: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    lat: {
+      type: String
+    },
+    long: {
+      type: String
+    }
+  },
+  car: {
+    make: {
+      type: String
+    },
+    model: {
+      type: String
+    },
+    year: {
+      type: String
+    },
+    mileage: {
+      type: String
+    }
+  },
+  times_viewed: {
+    type: Number
+  },
   creation_date: {
     type: Date,
     default: Date.now

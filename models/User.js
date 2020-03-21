@@ -15,6 +15,52 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String
+  },
+  phone: {
+    type: String
+  },
+  location: {
+    postcode: {
+      type: String
+    },
+    region: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    lat: {
+      type: String
+    },
+    long: {
+      type: String
+    }
+  },
+  browsing_history: [
+    {
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: "listings"
+      },
+      date: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ],
+  search_history: [
+    {
+      query: {
+        type: String
+      },
+      date: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ],
   register_date: {
     type: Date,
     default: Date.now
