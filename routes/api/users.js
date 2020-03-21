@@ -13,6 +13,8 @@ const User = require("../../models/User");
 router.post("/", (req, res) => {
   const { name, email, password } = req.body;
 
+  // TODO: Update fields with new model
+
   // Simple validation
   if (!name || !email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
