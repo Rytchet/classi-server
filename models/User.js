@@ -45,7 +45,7 @@ const UserSchema = new Schema({
     {
       id: {
         type: Schema.Types.ObjectId,
-        ref: "listings"
+        ref: "listing"
       },
       date: {
         type: Date,
