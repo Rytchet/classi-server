@@ -50,7 +50,7 @@ const ListingSchema = new Schema({
       type: String
     },
     year: {
-      type: String
+      type: Number
     },
     mileage: {
       type: String

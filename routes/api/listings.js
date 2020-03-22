@@ -28,7 +28,7 @@ router.get("/:id", (req, res) => {
 // @desc Create a listing
 // @access Private
 router.post("/", auth, (req, res) => {
-  const { title, price, description, user_id, phone, email } = req.body;
+  const { title, price, description, phone, email } = req.body;
 
   // TODO: Figure out how to get the car vars nicely
 
@@ -36,8 +36,7 @@ router.post("/", auth, (req, res) => {
     title,
     price,
     description,
-    // user_id: req.user.id, <- TODO: Do it like this
-    user_id,
+    user_id: req.user.id,
     phone,
     email,
     // location: { TODO: Implement the postcode API here
