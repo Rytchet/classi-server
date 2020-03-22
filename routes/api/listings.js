@@ -39,13 +39,14 @@ router.post("/", auth, (req, res) => {
     user_id: req.user.id,
     phone,
     email,
-    // location: { TODO: Implement the postcode API here
-    //   postcode: req.body.postcode,
-    //   region: req.body.region,
-    //   city: req.body.city,
-    //   lat: req.body.lat,
-    //   long: req.body.long
-    // }
+    // TODO: Implement the postcode API here
+    location: {
+      postcode: req.body.location.postcode
+      //   region: req.body.region,
+      //   city: req.body.city,
+      //   lat: req.body.lat,
+      //   long: req.body.long
+    },
     car: {
       make: req.body.car.make,
       model: req.body.car.model,

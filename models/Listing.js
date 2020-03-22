@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// TODO: Add pictures
+
 const ListingSchema = new Schema({
   title: {
     type: String,
