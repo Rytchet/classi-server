@@ -61,6 +61,15 @@ router.post("/", (req, res) => {
   });
 });
 
+// TODO: Implement this better, don't send all info
+
+// @route GET api/users
+// @desc Get the profile of a user
+// @access Public
+router.get("/:id/profile", (req, res) => {
+  User.findById(req.params.id).then(user => res.json(user));
+});
+
 // TODO: Delete this, not secure
 
 // @route GET api/users
@@ -71,7 +80,7 @@ router.get("/:id", (req, res) => {
 });
 
 // @route GET api/users/:id
-// @desc Get a User
+// @desc Get all info of a User
 // @access Public
 router.get("/:id", (req, res) => {
   User.findById(req.params.id).then(user => res.json(user));
