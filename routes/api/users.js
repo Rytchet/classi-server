@@ -75,7 +75,7 @@ router.get("/:id/profile", (req, res) => {
 // @route GET api/users
 // @desc Get all users
 // @access Public
-router.get("/:id", (req, res) => {
+router.get("/", (req, res) => {
   User.find().then(users => res.json(users));
 });
 
