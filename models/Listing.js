@@ -53,7 +53,7 @@ const ListingSchema = new Schema({
       type: Number
     },
     mileage: {
-      type: String
+      type: Number
     }
   },
   times_viewed: {
