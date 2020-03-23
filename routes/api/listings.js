@@ -9,10 +9,15 @@ const Listing = require("../../models/Listing");
 // @desc Get all listings
 // @access Public
 router.get("/", (req, res) => {
-  Listing.find()
+  query = {};
+  if (req.query.user_id) {
+    query = { user_id: req.query.user_id };
+  }
+
+  Listing.find(query)
     .sort({ date: -1 }) // Sort by date descending
     .then(listings => res.json(listings))
-    .catch(err => res.status(404).json({ err: "No lsitings found" }));
+    .catch(err => res.status(404).json({ err: "No listings found" }));
 });
 
 // @route GET api/listings/:id
