@@ -73,4 +73,14 @@ router.delete("/:id", auth, (req, res) => {
     .catch(err => res.status(404).json({ success: false })); // Return 404 Not found;
 });
 
+// @route GET api/listings/popular
+// @desc Get most viewed
+// @access Public
+router.get("/popular/:n", (req, res) => {
+  Listings.find()
+    .sort({ times_viewed: "descending" })
+    .limit(req.params.n)
+    .then(listings => res.json(listings));
+});
+
 module.exports = router;
