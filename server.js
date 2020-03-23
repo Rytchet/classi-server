@@ -33,6 +33,7 @@ mongoose
 app.use("/api/listings", require("./routes/api/listings"));
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
+app.use("/api/images", require("./routes/api/images"));
 
 // Run the server on localhost:5000
 const port = process.env.PORT || 5000;
