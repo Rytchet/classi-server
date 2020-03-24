@@ -43,6 +43,19 @@ router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
   }
 });
 
+// @route DELETE /api/images/avatars
+// @desc Remove an avatar
+// @access Private
+router.delete("/avatars", auth, (req, res) => {
+  User.findById(req.user.id).then(user => {
+    const filePath = path.join(__dirname, "../../public", user.avatar_url);
+    fs.unlink(filePath, err => {
+      if (err) throw err;
+    });
+    res.json({ success: true });
+  });
+});
+
 // Temporarily removed
 // router.get("/avatars/:id", (req, res) => {
 //   res.sendFile(
