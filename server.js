@@ -29,6 +29,9 @@ mongoose
 // // Passport config
 // require("./config/passport")(passport);
 
+// Use public dir
+app.use("/images", express.static(__dirname + "/public/images"));
+
 // Use routes
 app.use("/api/listings", require("./routes/api/listings"));
 app.use("/api/users", require("./routes/api/users"));
