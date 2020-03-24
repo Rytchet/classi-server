@@ -38,10 +38,11 @@ router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
   }
 });
 
-router.get("/avatars/:id", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "../../public/images/avatars", req.params.id + ".jpg")
-  );
-});
+// Temporarily removed
+// router.get("/avatars/:id", (req, res) => {
+//   res.sendFile(
+//     path.join(__dirname, "../../public/images/avatars", req.params.id + ".jpg")
+//   );
+// });
 
 module.exports = router;
