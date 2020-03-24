@@ -48,6 +48,8 @@ router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
 // @access Private
 router.delete("/avatars", auth, (req, res) => {
   User.findById(req.user.id).then(user => {
+    user.avatar_url = "";
+    user.save();
     const filePath = path.join(__dirname, "../../public", user.avatar_url);
     fs.unlink(filePath, err => {
       if (err) throw err;
