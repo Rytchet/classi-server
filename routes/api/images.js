@@ -11,6 +11,9 @@ const upload = multer({
   dest: "public/images/avatars/temp"
 });
 
+// @route POST /api/images/avatars
+// @desc Upload an avatar
+// @access Private
 router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
   const tempPath = req.file.path;
   let targetPath = path.join(
@@ -19,12 +22,10 @@ router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
     req.user.id
   );
 
-  console.log(req.file);
-  console.log(targetPath);
-
   const fileExtension = path.extname(req.file.originalname).toLowerCase();
   targetPath = targetPath + fileExtension;
 
+  // If the file is correct
   if (fileExtension === ".jpg" || fileExtension === ".png") {
     fs.rename(tempPath, targetPath, err => {});
 
