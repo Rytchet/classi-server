@@ -19,7 +19,7 @@ const UserSchema = new Schema({
   avatar_url: {
     type: String
   },
-  description: {
+  bio: {
     type: String
   },
   phone: {
