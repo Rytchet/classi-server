@@ -36,7 +36,9 @@ router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
 
     res.json({ success: true });
   } else {
-    fs.unlink(tempPath, err => {});
+    fs.unlink(tempPath, err => {
+      if (err) throw err;
+    });
     res.status(403).json({ success: false });
   }
 });
