@@ -27,11 +27,13 @@ router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
 
   if (fileExtension === ".jpg" || fileExtension === ".png") {
     fs.rename(tempPath, targetPath, err => {});
-    res.json({ success: true });
 
-    let user = User.findById(req.user.id);
-    user.avatar_url = targetPath;
-    user.save();
+    User.findById(req.user.id).then(user => {
+      user.avatar_url = "/images/avatars/" + user.id + fileExtension;
+      user.save();
+    });
+
+    res.json({ success: true });
   } else {
     fs.unlink(tempPath, err => {});
     res.status(403).json({ success: false });
