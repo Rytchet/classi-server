@@ -73,8 +73,15 @@ router.post("/", auth, (req, res) => {
 // @access Private
 router.delete("/:id", auth, (req, res) => {
   Listing.findById(req.params.id)
-    .then(listing => listing.remove().then(() => res.json({ success: true }))) // Return a 200 OK
-    .catch(err => res.status(404).json({ success: false })); // Return 404 Not found;
+    .then(listing => {
+      if (listing.user_id != req.user.id) {
+        res.status(403).json({ success: false, msg: "Not authorized" });
+      }
+      listing.remove().then(() => res.json({ success: true })); // Return a 200 OK
+    })
+    .catch(err =>
+      res.status(404).json({ success: false, msg: "Listing not found" })
+    ); // Return 404 Not found;
 });
 
 // @route GET api/listings/popular
