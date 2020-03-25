@@ -40,7 +40,7 @@ router.post("/avatars", auth, uploadAvatar.single("avatar"), (req, res) => {
     fs.unlink(tempPath, err => {
       if (err) throw err;
     });
-    res.status(403).json({ success: false });
+    res.status(403).json({ success: false, msg: "Wrong file type" });
   }
 });
 
