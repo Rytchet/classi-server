@@ -59,13 +59,6 @@ router.delete("/avatars", auth, (req, res) => {
   });
 });
 
-// Temporarily removed
-// router.get("/avatars/:id", (req, res) => {
-//   res.sendFile(
-//     path.join(__dirname, "../../public/images/avatars", req.params.id + ".jpg")
-//   );
-// });
-
 const uploadListing = multer({
   dest: "public/images/listings/temp"
 });
