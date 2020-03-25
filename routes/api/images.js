@@ -7,14 +7,14 @@ const fs = require("fs");
 
 const User = require("../../models/User");
 
-const upload = multer({
+const uploadAvatar = multer({
   dest: "public/images/avatars/temp"
 });
 
 // @route POST /api/images/avatars
 // @desc Upload an avatar
 // @access Private
-router.post("/avatars", auth, upload.single("avatar"), (req, res) => {
+router.post("/avatars", auth, uploadAvatar.single("avatar"), (req, res) => {
   const tempPath = req.file.path;
   let targetPath = path.join(
     __dirname,
