@@ -20,6 +20,11 @@ const ListingSchema = new Schema({
     ref: "user",
     required: true
   },
+  photos: [
+    {
+      type: String
+    }
+  ],
   phone: {
     type: String
   },
