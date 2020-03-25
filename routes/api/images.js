@@ -70,16 +70,21 @@ const uploadListing = multer({
   dest: "public/images/listings/temp"
 });
 
+// @route POST /api/images/listings/:id
+// @desc Upload images for a listing
+// @access Private
 router.post(
   "/listings/:id",
   auth,
   uploadListing.array("photos", 10),
   (req, res) => {
     Listing.findById(req.params.id).then(listing => {
+      // Check if the user is allowed to upload the pictures
       if (req.user.id != listing.user_id) {
         res.status(403).json({ success: false, msg: "Forbidden" });
       }
 
+      // TODO: Figure out if it's possible to do this without the __dirname, bc its ugly
       const baseTargetPath = path.join(
         __dirname,
         "../../public/images/listings/",
@@ -101,22 +106,25 @@ router.post(
 
       let pathList = [];
 
+      // Create the folder for the pictures
       if (!fs.existsSync(baseTargetPath)) {
         fs.mkdirSync(baseTargetPath);
       }
 
+      // Save the files in the listing folder
       req.files.forEach(file => {
         let targetPath = baseTargetPath + "\\" + file.originalname;
-        console.log(file.path);
-        console.log(targetPath);
+
         fs.rename(file.path, targetPath, err => {
           console.log(err);
         });
+
         pathList.push(
           "/images/listings/" + listing.id + "/" + file.originalname
         );
       });
 
+      // Update the listing with a list of paths to the pictures
       listing.photos = pathList;
       listing.save();
 
