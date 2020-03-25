@@ -106,10 +106,12 @@ router.post(
 
       // Save the files in the listing folder
       req.files.forEach(file => {
-        let targetPath = baseTargetPath + "\\" + file.originalname;
+        let targetPath = path.join(baseTargetPath, file.originalname);
+        console.log(file.path);
+        console.log(targetPath);
 
         fs.rename(file.path, targetPath, err => {
-          console.log(err);
+          if (err) console.log(err);
         });
 
         pathList.push(
