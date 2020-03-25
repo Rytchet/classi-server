@@ -80,10 +80,9 @@ router.delete("/:id", auth, (req, res) => {
 // @route GET api/listings/popular
 // @desc Get most viewed
 // @access Public
-router.get("/popular/:n", (req, res) => {
+router.get("/popular", (req, res) => {
   Listings.find()
     .sort({ times_viewed: "descending" })
-    .limit(req.params.n)
     .then(listings => res.json(listings));
 });
 
