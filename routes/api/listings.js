@@ -37,9 +37,8 @@ router.get("/:id", (req, res) => {
 // @desc Create a listing
 // @access Private
 router.post("/", auth, (req, res) => {
-  const { title, price, description, phone, email } = req.body;
-
-  // TODO: Figure out how to get the car vars nicely
+  const { title, price, description, phone, email, car } = req.body;
+  const { make, model, year, mileage } = car;
 
   const newListing = new Listing({
     title,
@@ -57,10 +56,10 @@ router.post("/", auth, (req, res) => {
       //   long: req.body.long
     },
     car: {
-      make: req.body.car.make,
-      model: req.body.car.model,
-      year: req.body.car.year,
-      mileage: req.body.car.mileage
+      make,
+      model,
+      year,
+      mileage
     },
     times_viewed: 0
   });
