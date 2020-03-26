@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
+const axios = require("axios");
 
 // Listings model
 const Listing = require("../../models/Listing");
@@ -37,34 +38,46 @@ router.get("/:id", (req, res) => {
 // @desc Create a listing
 // @access Private
 router.post("/", auth, (req, res) => {
-  const { title, price, description, phone, email, car } = req.body;
-  const { make, model, year, mileage } = car;
+  const { title, price, description, phone, email } = req.body;
 
-  const newListing = new Listing({
-    title,
-    price,
-    description,
-    user_id: req.user.id,
-    phone,
-    email,
-    // TODO: Implement the postcode API here
-    location: {
-      postcode: req.body.location.postcode
-      //   region: req.body.region,
-      //   city: req.body.city,
-      //   lat: req.body.lat,
-      //   long: req.body.long
-    },
-    car: {
-      make,
-      model,
-      year,
-      mileage
-    },
-    times_viewed: 0
-  });
+  const postcode = req.body.location.postcode;
+  let region, city, lat, long;
 
-  newListing.save().then(listing => res.json(listing));
+  axios
+    .get("https://api.postcodes.io/postcodes/" + encodeURI(postcode))
+    .then(postcodeRes => {
+      console.log(postcodeRes.data.result.region);
+      region = postcodeRes.data.result.region;
+      city = postcodeRes.data.result.admin_district;
+      lat = postcodeRes.data.result.latitude;
+      long = postcodeRes.data.result.longitude;
+
+      const newListing = new Listing({
+        title,
+        price,
+        description,
+        user_id: req.user.id,
+        phone,
+        email,
+        location: {
+          postcode,
+          region,
+          city,
+          lat,
+          long
+        },
+        car: {
+          make: req.body.car.make,
+          model: req.body.car.model,
+          year: req.body.car.year,
+          mileage: req.body.car.mileage
+        },
+        times_viewed: 0
+      });
+
+      newListing.save().then(listing => res.json(listing));
+    })
+    .catch(err => console.log(err));
 });
 
 // @route DELETE api/listings/:id

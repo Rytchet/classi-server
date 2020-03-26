@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ph0well/classi#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "concurrently": "^5.1.0",
     "config": "^3.3.0",
