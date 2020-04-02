@@ -72,7 +72,7 @@ All parameters are Strings unless specified otherwise
 
 - Access: Private
 - Parameters: none
-- Returns: 200 OK and {success: true} on success, 404 Not Found and {success: false} on failure
+- Returns: Status message
 
 #### Get most viewed listings
 
@@ -90,7 +90,7 @@ All parameters are Strings unless specified otherwise
 
 - Access: Private
 - Parameters: A .jpg or .png file in form-data of the request, with Key "avatar"
-- Returns: 200 OK or 403 Forbidden for wrong file type
+- Returns: Status message
 
 #### Delete User avatar
 
@@ -98,7 +98,7 @@ All parameters are Strings unless specified otherwise
 
 - Access: Private
 - Parameters: none
-- Returns: 200 OK
+- Returns: Status message
 
 #### Listing photos
 
@@ -106,4 +106,4 @@ All parameters are Strings unless specified otherwise
 
 - Access: Private
 - Parameters: A list of .jpg or .png files (can be mixed) in form-data, with Key "photos[]"
-- Returns: 200 OK or 403 Forbidden for wrong file types
+- Returns: Status message
