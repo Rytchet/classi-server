@@ -3,9 +3,11 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
+const auth = require("../../middleware/auth");
 
 // Listings model
 const User = require("../../models/User");
+const Listing = require("../../models/Listing");
 
 // @route POST api/users
 // @desc Register new user
@@ -71,7 +73,6 @@ router.get("/:id/profile", (req, res) => {
 });
 
 // TODO: Delete this, not secure
-
 // @route GET api/users
 // @desc Get all users
 // @access Public
@@ -84,6 +85,48 @@ router.get("/", (req, res) => {
 // @access Public
 router.get("/:id", (req, res) => {
   User.findById(req.params.id).then(user => res.json(user));
+});
+
+// @route PUT api/users/favorites/:listingId
+// @desc Favorite a listing
+// @access Private
+router.put("/favorites/:id", auth, (req, res) => {
+  User.findById(req.user.id).then(user => {
+    // Check if listing is valid
+    Listing.findById(req.params.id)
+      .then(listing => {
+        // Create array if doesnt exist
+        if (!user.favorites) {
+          user.favorites = [];
+        }
+
+        // Add to array
+        if (user.favorites.indexOf(req.params.id) > -1) {
+          res.json({ msg: "Success" });
+        } else {
+          user.favorites.push(req.params.id);
+          user.save();
+          res.json({ msg: "Success" });
+        }
+      })
+      .catch(err => {
+        res.status(400).json({ msg: "Listing does not exist" });
+      });
+  });
+});
+
+// @route DELETE api/users/favorites/:listingId
+// @desc Unfavorite a listing
+// @access Private
+router.delete("/favorites/:id", auth, (req, res) => {
+  User.findById(req.user.id).then(user => {
+    const index = user.favorites.indexOf(req.params.id);
+    if (index > -1) {
+      user.favorites.splice(index, 1);
+    }
+    user.save();
+    res.json({ msg: "Success" });
+  });
 });
 
 module.exports = router;
