@@ -62,8 +62,12 @@ All parameters are Strings unless specified otherwise
 
 - Access: Private
 - Parameters:
-  - Required: title, price (int), location: {postcode}
-  - Optional: description, phone, email, car: {make, model, year, mileage}
+
+  - Required: title, price (int), location: {postcode}, car: {make, model, year (int)}
+  - Optional: description, phone, email, car: {mileage}
+
+  If phone and email are not specified they are taken from the user model
+
 - Returns: The created listing
 
 #### Delete a listing

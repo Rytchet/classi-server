@@ -38,15 +38,18 @@ router.get("/:id", (req, res) => {
 // @desc Create a listing
 // @access Private
 router.post("/", auth, (req, res) => {
-  const { title, price, description, phone, email } = req.body;
+  const { title, price, description } = req.body;
+  const { make, model, year, mileage } = req.body.car;
 
   const postcode = req.body.location.postcode;
   let region, city, lat, long;
 
+  const phone = req.body.phone || req.user.phone;
+  const email = req.body.email || req.user.email;
+
   axios
     .get("https://api.postcodes.io/postcodes/" + encodeURI(postcode))
     .then(postcodeRes => {
-      console.log(postcodeRes.data.result.region);
       region = postcodeRes.data.result.region;
       city = postcodeRes.data.result.admin_district;
       lat = postcodeRes.data.result.latitude;
@@ -67,10 +70,10 @@ router.post("/", auth, (req, res) => {
           long
         },
         car: {
-          make: req.body.car.make,
-          model: req.body.car.model,
-          year: req.body.car.year,
-          mileage: req.body.car.mileage
+          make,
+          model,
+          year,
+          mileage
         },
         times_viewed: 0
       });
