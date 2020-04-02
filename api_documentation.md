@@ -22,6 +22,22 @@ All parameters are Strings unless specified otherwise
 - Parameters: email, password
 - Returns: token, id, name, email
 
+#### Favorite a listing
+
+    PUT /api/users/favorites/:listing_id
+
+- Access: Private
+- Parameters: none
+- Returns: A status message
+
+#### Unfavorite a listing
+
+    DELETE /api/users/favorites/:listing_id
+
+- Access: Private
+- Parameters: none
+- Returns: A status message
+
 ## Listings
 
 #### Getting all listings
