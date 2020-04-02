@@ -106,3 +106,21 @@ router.get("/popular", (req, res) => {
 });
 
 module.exports = router;
+
+// Example on how to do filters
+// app.get('/employees', (req, res) => {
+//   const { firstName, lastName, age } = req.query;
+//   let results = [...employees];
+//   if (firstName) {
+//     results = results.filter(r => r.firstName === firstName);
+//   }
+
+//   if (lastName) {
+//     results = results.filter(r => r.lastName === lastName);
+//   }
+
+//   if (age) {
+//     results = results.filter(r => +r.age === +age);
+//   }
+//   res.json(results);
+// });
