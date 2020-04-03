@@ -22,6 +22,14 @@ All parameters are Strings unless specified otherwise
 - Parameters: email, password
 - Returns: token, id, name, email
 
+#### Get private user data
+
+    GET /api/auth/user
+
+- Access: Private
+- Parameters: none
+- Returns: All user data (except password)
+
 #### Favorite a listing
 
     PUT /api/users/favorites/:listing_id
