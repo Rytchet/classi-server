@@ -1,31 +1,31 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const config = require("config");
-const jwt = require("jsonwebtoken");
-const auth = require("../../middleware/auth");
+const bcrypt = require('bcryptjs');
+const config = require('config');
+const jwt = require('jsonwebtoken');
+const auth = require('../../middleware/auth');
 
 // Listings model
-const User = require("../../models/User");
-const Listing = require("../../models/Listing");
+const User = require('../../models/User');
+const Listing = require('../../models/Listing');
 
 // @route POST api/users
 // @desc Register new user
 // @access Public
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   const { name, email, password } = req.body;
 
   // TODO: Update fields with new model
 
   // Simple validation
   if (!name || !email || !password) {
-    return res.status(400).json({ msg: "Please enter all fields" });
+    return res.status(400).json({ msg: 'Please enter all fields' });
   }
 
   // Check for existing user
   User.findOne({ email }).then(user => {
     if (user) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ msg: 'User already exists' });
     }
     const newUser = new User({
       name,
@@ -41,7 +41,7 @@ router.post("/", (req, res) => {
         newUser.save().then(user => {
           jwt.sign(
             { id: user.id },
-            config.get("jwtSecret"),
+            config.get('jwtSecret'),
             {
               expiresIn: 3600
             },
@@ -68,7 +68,7 @@ router.post("/", (req, res) => {
 // @route GET api/users
 // @desc Get the profile of a user
 // @access Public
-router.get("/:id/profile", (req, res) => {
+router.get('/:id/profile', (req, res) => {
   User.findById(req.params.id).then(user => res.json(user));
 });
 
@@ -76,21 +76,21 @@ router.get("/:id/profile", (req, res) => {
 // @route GET api/users
 // @desc Get all users
 // @access Public
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   User.find().then(users => res.json(users));
 });
 
 // @route GET api/users/:id
 // @desc Get all info of a User
 // @access Public
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   User.findById(req.params.id).then(user => res.json(user));
 });
 
 // @route PUT api/users/favorites/:listingId
 // @desc Favorite a listing
 // @access Private
-router.put("/favorites/:id", auth, (req, res) => {
+router.put('/favorites/:id', auth, (req, res) => {
   User.findById(req.user.id).then(user => {
     // Check if listing is valid
     Listing.findById(req.params.id)
@@ -102,15 +102,15 @@ router.put("/favorites/:id", auth, (req, res) => {
 
         // Add to array
         if (user.favorites.indexOf(req.params.id) > -1) {
-          res.json({ msg: "Success" });
+          res.json({ msg: 'Success' });
         } else {
           user.favorites.push(req.params.id);
           user.save();
-          res.json({ msg: "Success" });
+          res.json({ msg: 'Success' });
         }
       })
       .catch(err => {
-        res.status(400).json({ msg: "Listing does not exist" });
+        res.status(400).json({ msg: 'Listing does not exist' });
       });
   });
 });
@@ -118,14 +118,14 @@ router.put("/favorites/:id", auth, (req, res) => {
 // @route DELETE api/users/favorites/:listingId
 // @desc Unfavorite a listing
 // @access Private
-router.delete("/favorites/:id", auth, (req, res) => {
+router.delete('/favorites/:id', auth, (req, res) => {
   User.findById(req.user.id).then(user => {
     const index = user.favorites.indexOf(req.params.id);
     if (index > -1) {
       user.favorites.splice(index, 1);
     }
     user.save();
-    res.json({ msg: "Success" });
+    res.json({ msg: 'Success' });
   });
 });
 

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // TODO: Add pictures
@@ -17,7 +17,7 @@ const ListingSchema = new Schema({
   },
   user_id: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true
   },
   photos: [
@@ -72,4 +72,4 @@ const ListingSchema = new Schema({
   }
 });
 
-module.exports = Listing = mongoose.model("listing", ListingSchema);
+module.exports = Listing = mongoose.model('listing', ListingSchema);

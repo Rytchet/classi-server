@@ -1,6 +1,6 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const config = require("config");
+const express = require('express');
+const mongoose = require('mongoose');
+const config = require('config');
 // const passport = require("passport");
 
 const app = express();
@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-const uri = config.get("mongoURI");
+const uri = config.get('mongoURI');
 
 // Connect to Mongoose
 // TODO: Allow only safe IP's to access the database. Change this in the Security/Network Access section in MongoDB Atlas
@@ -20,7 +20,7 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true
   })
-  .then(() => console.log("Connected to database"))
+  .then(() => console.log('Connected to database'))
   .catch(err => console.log(err));
 
 // // Passport middleware
@@ -30,13 +30,13 @@ mongoose
 // require("./config/passport")(passport);
 
 // Use public dir
-app.use("/images", express.static(__dirname + "/public/images"));
+app.use('/images', express.static(__dirname + '/public/images'));
 
 // Use routes
-app.use("/api/listings", require("./routes/api/listings"));
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/auth", require("./routes/api/auth"));
-app.use("/api/images", require("./routes/api/images"));
+app.use('/api/listings', require('./routes/api/listings'));
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/images', require('./routes/api/images'));
 
 // Run the server on localhost:5000
 const port = process.env.PORT || 5000;
