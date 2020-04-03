@@ -1,9 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
+const cors = require('cors');
 // const passport = require("passport");
 
 const app = express();
+
+// Cross-origin resource sharing
+// Without that the website breaks
+app.use(cors());
 
 // Bodyparser Middleware
 app.use(express.json());
