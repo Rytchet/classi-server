@@ -17,8 +17,17 @@ router.get('/', (req, res) => {
 
   Listing.find(query)
     .sort({ date: -1 }) // Sort by date descending
-    .then(listings => res.json(listings))
-    .catch(err => res.status(404).json({ err: 'No listings found' }));
+    .then((listings) => res.json(listings))
+    .catch((err) => res.status(404).json({ err: 'No listings found' }));
+});
+
+// @route GET api/listings/popular
+// @desc Get most viewed
+// @access Public
+router.get('/popular', (req, res) => {
+  Listings.find()
+    .sort({ times_viewed: 'descending' })
+    .then((listings) => res.json(listings));
 });
 
 // @route GET api/listings/:id
@@ -26,12 +35,12 @@ router.get('/', (req, res) => {
 // @access Public
 router.get('/:id', (req, res) => {
   Listing.findById(req.params.id)
-    .then(listing => {
+    .then((listing) => {
       listing.times_viewed = listing.times_viewed + 1;
       listing.save();
       res.json(listing);
     })
-    .catch(err => res.status(404).json({ err: 'Listing not found' }));
+    .catch((err) => res.status(404).json({ err: 'Listing not found' }));
 });
 
 // @route POST api/listings
@@ -49,7 +58,7 @@ router.post('/', auth, (req, res) => {
 
   axios
     .get('https://api.postcodes.io/postcodes/' + encodeURI(postcode))
-    .then(postcodeRes => {
+    .then((postcodeRes) => {
       region = postcodeRes.data.result.region;
       city = postcodeRes.data.result.admin_district;
       lat = postcodeRes.data.result.latitude;
@@ -67,20 +76,20 @@ router.post('/', auth, (req, res) => {
           region,
           city,
           lat,
-          long
+          long,
         },
         car: {
           make,
           model,
           year,
-          mileage
+          mileage,
         },
-        times_viewed: 0
+        times_viewed: 0,
       });
 
-      newListing.save().then(listing => res.json(listing));
+      newListing.save().then((listing) => res.json(listing));
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 // @route DELETE api/listings/:id
@@ -88,24 +97,15 @@ router.post('/', auth, (req, res) => {
 // @access Private
 router.delete('/:id', auth, (req, res) => {
   Listing.findById(req.params.id)
-    .then(listing => {
+    .then((listing) => {
       if (listing.user_id != req.user.id) {
         res.status(403).json({ success: false, msg: 'Not authorized' });
       }
       listing.remove().then(() => res.json({ success: true })); // Return a 200 OK
     })
-    .catch(err =>
+    .catch((err) =>
       res.status(404).json({ success: false, msg: 'Listing not found' })
     ); // Return 404 Not found;
-});
-
-// @route GET api/listings/popular
-// @desc Get most viewed
-// @access Public
-router.get('/popular', (req, res) => {
-  Listings.find()
-    .sort({ times_viewed: 'descending' })
-    .then(listings => res.json(listings));
 });
 
 module.exports = router;
