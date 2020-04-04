@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 // @desc Get most viewed
 // @access Public
 router.get('/popular', (req, res) => {
-  Listings.find()
+  Listing.find()
     .sort({ times_viewed: 'descending' })
     .then((listings) => res.json(listings));
 });
