@@ -10,6 +10,10 @@ const Listing = require('../../models/Listing');
 
 const uploadAvatar = multer({
   dest: 'public/images/avatars/temp',
+  onError: function (err, next) {
+    console.log('error', err);
+    next(err);
+  },
 });
 
 // @route POST /api/images/avatars
