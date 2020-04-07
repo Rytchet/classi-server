@@ -9,7 +9,7 @@ const User = require('../../models/User');
 const Listing = require('../../models/Listing');
 
 const uploadAvatar = multer({
-  dest: 'public/images/avatars/temp'
+  dest: 'public/images/avatars/temp',
 });
 
 // @route POST /api/images/avatars
@@ -28,16 +28,16 @@ router.post('/avatars', auth, uploadAvatar.single('avatar'), (req, res) => {
 
   // If the file is correct
   if (fileExtension === '.jpg' || fileExtension === '.png') {
-    fs.rename(tempPath, targetPath, err => {});
+    fs.rename(tempPath, targetPath, (err) => {});
 
-    User.findById(req.user.id).then(user => {
+    User.findById(req.user.id).then((user) => {
       user.avatar_url = '/images/avatars/' + user.id + fileExtension;
       user.save();
     });
 
     res.json({ success: true });
   } else {
-    fs.unlink(tempPath, err => {
+    fs.unlink(tempPath, (err) => {
       if (err) throw err;
     });
     res.status(403).json({ success: false, msg: 'Wrong file type' });
@@ -48,11 +48,11 @@ router.post('/avatars', auth, uploadAvatar.single('avatar'), (req, res) => {
 // @desc Remove an avatar
 // @access Private
 router.delete('/avatars', auth, (req, res) => {
-  User.findById(req.user.id).then(user => {
+  User.findById(req.user.id).then((user) => {
     user.avatar_url = '';
     user.save();
     const filePath = path.join(__dirname, '../../public', user.avatar_url);
-    fs.unlink(filePath, err => {
+    fs.unlink(filePath, (err) => {
       if (err) throw err;
     });
     res.json({ success: true });
@@ -60,7 +60,7 @@ router.delete('/avatars', auth, (req, res) => {
 });
 
 const uploadListing = multer({
-  dest: 'public/images/listings/temp'
+  dest: 'public/images/listings/temp',
 });
 
 // @route POST /api/images/listings/:id
@@ -71,7 +71,7 @@ router.post(
   auth,
   uploadListing.array('photos', 10),
   (req, res) => {
-    Listing.findById(req.params.id).then(listing => {
+    Listing.findById(req.params.id).then((listing) => {
       // Check if the user is allowed to upload the pictures
       if (req.user.id != listing.user_id) {
         res.status(403).json({ success: false, msg: 'Forbidden' });
@@ -85,11 +85,11 @@ router.post(
       );
 
       // Check if all files are the correct format, if not delete all and 403
-      req.files.forEach(file => {
+      req.files.forEach((file) => {
         const fileExtension = path.extname(file.originalname).toLowerCase();
         if (fileExtension != '.jpg' && fileExtension != '.png') {
-          req.files.forEach(file => {
-            fs.unlink(file.path, err => {
+          req.files.forEach((file) => {
+            fs.unlink(file.path, (err) => {
               if (err) throw err;
             });
           });
@@ -105,12 +105,12 @@ router.post(
       }
 
       // Save the files in the listing folder
-      req.files.forEach(file => {
+      req.files.forEach((file) => {
         let targetPath = path.join(baseTargetPath, file.originalname);
         console.log(file.path);
         console.log(targetPath);
 
-        fs.rename(file.path, targetPath, err => {
+        fs.rename(file.path, targetPath, (err) => {
           if (err) console.log(err);
         });
 
