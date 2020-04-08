@@ -6,70 +6,75 @@ const Schema = mongoose.Schema;
 const ListingSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   user_id: {
     type: Schema.Types.ObjectId,
     ref: 'user',
-    required: true
+    required: true,
   },
   photos: [
     {
-      type: String
-    }
+      type: String,
+    },
   ],
   phone: {
-    type: String
+    type: String,
   },
   email: {
-    type: String
+    type: String,
   },
   location: {
     postcode: {
       type: String,
-      required: true
+      required: true,
     },
     region: {
-      type: String
+      type: String,
     },
     city: {
-      type: String
+      type: String,
     },
     lat: {
-      type: String
+      type: String,
     },
     long: {
-      type: String
-    }
+      type: String,
+    },
   },
   car: {
     make: {
-      type: String
+      type: String,
+      required: true,
     },
     model: {
-      type: String
+      type: String,
+      required: true,
     },
     year: {
-      type: Number
+      type: Number,
+      required: true,
     },
     mileage: {
-      type: Number
-    }
+      type: Number,
+      required: true,
+    },
   },
   times_viewed: {
-    type: Number
+    type: Number,
+    default: 0,
   },
   creation_date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = Listing = mongoose.model('listing', ListingSchema);
