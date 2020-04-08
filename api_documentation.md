@@ -71,8 +71,8 @@ All parameters are Strings unless specified otherwise
 - Access: Private
 - Parameters:
 
-  - Required: title, price (int), location: {postcode}, car: {make, model, year (int)}
-  - Optional: description, phone, email, car: {mileage}
+  - Required: title, price (int), location: {postcode}, car: {make, model, year (int), mileage (int)}
+  - Optional: description, phone, email
 
   If phone and email are not specified they are taken from the user model
 
