@@ -4,76 +4,77 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true
+    lowercase: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   avatar_url: {
-    type: String
+    type: String,
+    default: '/images/avatars/default.png',
   },
   bio: {
-    type: String
+    type: String,
   },
   phone: {
-    type: String
+    type: String,
   },
   location: {
     postcode: {
-      type: String
+      type: String,
     },
     region: {
-      type: String
+      type: String,
     },
     city: {
-      type: String
+      type: String,
     },
     lat: {
-      type: String
+      type: String,
     },
     long: {
-      type: String
-    }
+      type: String,
+    },
   },
   favorites: [
     {
-      type: String
-    }
+      type: String,
+    },
   ],
   browsing_history: [
     {
       id: {
         type: Schema.Types.ObjectId,
-        ref: 'listing'
+        ref: 'listing',
       },
       date: {
         type: Date,
-        default: Date.now
-      }
-    }
+        default: Date.now,
+      },
+    },
   ],
   search_history: [
     {
       query: {
-        type: String
+        type: String,
       },
       date: {
         type: Date,
-        default: Date.now
-      }
-    }
+        default: Date.now,
+      },
+    },
   ],
   register_date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
