@@ -30,8 +30,8 @@ router.get('/popular', (req, res) => {
     .then((listings) => res.json(listings));
 });
 
-// @route GET api/listings/popular
-// @desc Get most viewed
+// @route GET api/listings/search
+// @desc Search listings
 // @access Public
 router.get('/search', (req, res) => {
   Listing.find({ $text: { $search: req.query.q } })
