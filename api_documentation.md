@@ -94,6 +94,14 @@ All parameters are Strings unless specified otherwise
 - Parameters: none
 - Returns: A list of all listings, sorted by times_viewed descending
 
+#### Search for listings
+
+    GET /api/listings/search
+
+- Access: Public
+- Parameters: You pass the query in a param with Key "q" (not in the body)
+- Returns: A list of all listings that match the query in the title, description, make, or model
+
 ## Images
 
 #### Add or change User avatar
