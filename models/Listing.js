@@ -20,12 +20,10 @@ const ListingSchema = new Schema({
     ref: 'user',
     required: true,
   },
-  photos: [
-    {
-      type: String,
-      default: 'https://classi.s3.eu-west-2.amazonaws.com/carDefault',
-    },
-  ],
+  photos: {
+    type: Array,
+    default: ['https://classi.s3.eu-west-2.amazonaws.com/carDefault'],
+  },
   phone: {
     type: String,
   },
