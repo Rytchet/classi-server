@@ -23,6 +23,7 @@ const ListingSchema = new Schema({
   photos: [
     {
       type: String,
+      default: 'https://classi.s3.eu-west-2.amazonaws.com/carDefault',
     },
   ],
   phone: {
