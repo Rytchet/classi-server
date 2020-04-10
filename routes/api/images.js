@@ -23,7 +23,6 @@ aws.config.update({
 const s3 = new aws.S3();
 
 const fileFilter = (req, file, cb) => {
-  console.log(file);
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     cb(null, true);
   } else {
@@ -31,7 +30,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({
+const uploadAvatar = multer({
   fileFilter,
   storage: multerS3({
     acl: 'public-read',
@@ -46,7 +45,7 @@ const upload = multer({
   }),
 });
 
-const singleUpload = upload.single('image');
+const singleUpload = uploadAvatar.single('avatar');
 
 // @route POST /api/images/avatars
 // @desc Upload an avatar
@@ -64,7 +63,7 @@ router.post('/avatars', auth, (req, res) => {
       user.save();
     });
 
-    return res.json({ imageUrl: req.file.location });
+    return res.json({ url: req.file.location });
   });
 });
 
@@ -89,73 +88,53 @@ router.delete('/avatars', auth, (req, res) => {
   });
 });
 
-const uploadListing = multer({
-  dest: 'public/images/listings/temp',
+const uploadPhotos = multer({
+  fileFilter,
+  storage: multerS3({
+    acl: 'public-read',
+    s3,
+    bucket: 'classi',
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: 'TEST_METADATA' });
+    },
+    key: function (req, file, cb) {
+      cb(null, req.params.id + file.originalname);
+    },
+  }),
 });
+
+const arrayUpload = uploadPhotos.array('photos');
 
 // @route POST /api/images/listings/:id
 // @desc Upload images for a listing
 // @access Private
-router.post(
-  '/listings/:id',
-  auth,
-  uploadListing.array('photos', 10),
-  (req, res) => {
-    Listing.findById(req.params.id).then((listing) => {
-      // Check if the user is allowed to upload the pictures
-      if (req.user.id != listing.user_id) {
-        res.status(403).json({ success: false, msg: 'Forbidden' });
-      }
+router.post('/listings/:id', auth, (req, res) => {
+  Listing.findById(req.params.id).then((listing) => {
+    if (listing.user_id != req.user.id) {
+      return res.status(403).json({ msg: 'This listing was not made by you' });
+    }
+  });
 
-      // TODO: Figure out if it's possible to do this without the __dirname, bc its ugly
-      const baseTargetPath = path.join(
-        __dirname,
-        '../../public/images/listings/',
-        listing.id
-      );
+  arrayUpload(req, res, function (err) {
+    if (err) {
+      return res
+        .status(422)
+        .json({ msg: 'Image upload error', detail: err.message });
+    }
 
-      // Check if all files are the correct format, if not delete all and 403
-      req.files.forEach((file) => {
-        const fileExtension = path.extname(file.originalname).toLowerCase();
-        if (fileExtension != '.jpg' && fileExtension != '.png') {
-          req.files.forEach((file) => {
-            fs.unlink(file.path, (err) => {
-              if (err) throw err;
-            });
-          });
-          res.status(403).json({ success: false, msg: 'Wrong file types' });
-        }
-      });
+    urls = [];
 
-      let pathList = [];
-
-      // Create the folder for the pictures
-      if (!fs.existsSync(baseTargetPath)) {
-        fs.mkdirSync(baseTargetPath);
-      }
-
-      // Save the files in the listing folder
-      req.files.forEach((file) => {
-        let targetPath = path.join(baseTargetPath, file.originalname);
-        console.log(file.path);
-        console.log(targetPath);
-
-        fs.rename(file.path, targetPath, (err) => {
-          if (err) console.log(err);
-        });
-
-        pathList.push(
-          '/images/listings/' + listing.id + '/' + file.originalname
-        );
-      });
-
-      // Update the listing with a list of paths to the pictures
-      listing.photos = pathList;
-      listing.save();
-
-      res.json({ success: true });
+    req.files.forEach((file) => {
+      urls.push(file.location);
     });
-  }
-);
+
+    Listing.findById(req.params.id).then((listing) => {
+      listing.photos = urls;
+      listing.save();
+    });
+
+    return res.json({ urls });
+  });
+});
 
 module.exports = router;
