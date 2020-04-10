@@ -72,14 +72,20 @@ router.post('/avatars', auth, (req, res) => {
 // @desc Remove an avatar
 // @access Private
 router.delete('/avatars', auth, (req, res) => {
-  User.findById(req.user.id).then((user) => {
-    user.avatar_url = '';
-    user.save();
-    const filePath = path.join(__dirname, '../../public', user.avatar_url);
-    fs.unlink(filePath, (err) => {
-      if (err) throw err;
-    });
-    res.json({ success: true });
+  const params = { Bucket: 'classi', Key: req.user.id };
+
+  s3.deleteObject(params, function (err, data) {
+    if (err) {
+      return res
+        .status(422)
+        .json({ msg: 'Error in deleting avatar', detail: err.message });
+    } else {
+      User.findById(req.user.id).then((user) => {
+        user.avatar_url = undefined;
+        user.save();
+      });
+      return res.json({ msg: 'Success' });
+    }
   });
 });
 
