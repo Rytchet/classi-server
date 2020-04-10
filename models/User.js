@@ -18,7 +18,7 @@ const UserSchema = new Schema({
   },
   avatar_url: {
     type: String,
-    default: '/images/avatars/default.png',
+    default: 'https://classi.s3.eu-west-2.amazonaws.com/default',
   },
   bio: {
     type: String,
