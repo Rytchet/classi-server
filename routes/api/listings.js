@@ -39,6 +39,52 @@ router.get('/search', (req, res) => {
     .then((listings) => res.json(listings));
 });
 
+// @route GET api/listings/recommended/:user_id
+// @desc Get recommended listings for a user
+// @access Private
+router.get('/recommended/:user_id', (req, res) => {
+  User.findById(req.params.user_id).then((user) => {
+    // Dont make recommendations if user browsed less than 3 listings
+    if (user.browsing_history.length < 3) {
+      Listing.find()
+        .sort({ times_viewed: 'descending' })
+        .then((listings) => res.json(listings));
+    }
+
+    let counter = { makes: [], models: [], years: [] };
+    let i = 0;
+
+    user.browsing_history.forEach((entry) => {
+      let id = entry._id;
+
+      Listing.findById(id).then((listing) => {
+        counter.makes.push(listing.car.make);
+        counter.models.push(listing.car.model);
+        counter.years.push(listing.car.year);
+        i += 1;
+
+        if (i == user.browsing_history.length - 1) {
+          function mode(arr) {
+            return arr
+              .sort(
+                (a, b) =>
+                  arr.filter((v) => v === a).length -
+                  arr.filter((v) => v === b).length
+              )
+              .pop();
+          }
+
+          let make = mode(counter.makes);
+          let model = mode(counter.models);
+          let year = mode(counter.years);
+
+          // TODO: Get three listings from these and res.json() them
+        }
+      });
+    });
+  });
+});
+
 // @route GET api/listings/:id/:user_id
 // @desc Get a listing with user
 // @access Public
@@ -71,36 +117,6 @@ router.get('/:id', (req, res) => {
       res.json(listing);
     })
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
-});
-
-// @route GET api/listings/recommended/:user_id
-// @desc Get recommended listings for a user
-// @access Private
-router.get('/recommended/:user_id', (req, res) => {
-  User.findById(req.params.match.user_id).then((user) => {
-    // Dont make recommendations if user browsed less than 3 listings
-    if (user.browsing_history.length < 3) {
-      Listing.find()
-        .sort({ times_viewed: 'descending' })
-        .then((listings) => res.json(listings));
-    }
-
-    let counter = { makes: [], models: [], years: [] };
-
-    user.browsing_history.forEach((entry) => {
-      let id = entry.id;
-
-      Listing.findById(id).then((listing) => {
-        counter.makes.push(listing.car.make);
-        counter.models.push(listing.car.model);
-        counter.years.push(listing.car.year);
-      });
-    });
-
-    console.log(counter);
-
-    res.json({ counter });
-  });
 });
 
 // @route POST api/listings
