@@ -3,8 +3,8 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const axios = require('axios');
 
-// Listings model
 const Listing = require('../../models/Listing');
+const User = require('../../models/User');
 
 // @route GET api/listings
 // @desc Get all listings
@@ -45,6 +45,14 @@ router.get('/search', (req, res) => {
 router.get('/:id', (req, res) => {
   Listing.findById(req.params.id)
     .then((listing) => {
+      // If there is a user passed, save the ID into his browsing history
+      if (req.body.user_id) {
+        User.findById(req.body.user_id).then((user) => {
+          user.browsing_history.push(listing.id);
+          user.save();
+        });
+      }
+
       listing.times_viewed = listing.times_viewed + 1;
       listing.save();
       res.json(listing);
