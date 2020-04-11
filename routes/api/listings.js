@@ -39,15 +39,15 @@ router.get('/search', (req, res) => {
     .then((listings) => res.json(listings));
 });
 
-// @route GET api/listings/:id
-// @desc Get a listing
+// @route GET api/listings/:id/:user_id
+// @desc Get a listing with user
 // @access Public
-router.get('/:id', (req, res) => {
+router.get('/:id/:user_id', (req, res) => {
   Listing.findById(req.params.id)
     .then((listing) => {
       // If there is a user passed, save the ID into his browsing history
-      if (req.body.user_id) {
-        User.findById(req.body.user_id).then((user) => {
+      if (req.params.user_id) {
+        User.findById(req.params.user_id).then((user) => {
           user.browsing_history.push(listing.id);
           user.save();
         });
@@ -58,6 +58,49 @@ router.get('/:id', (req, res) => {
       res.json(listing);
     })
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
+});
+
+// @route GET api/listings/:id/
+// @desc Get a listing
+// @access Public
+router.get('/:id', (req, res) => {
+  Listing.findById(req.params.id)
+    .then((listing) => {
+      listing.times_viewed = listing.times_viewed + 1;
+      listing.save();
+      res.json(listing);
+    })
+    .catch((err) => res.status(404).json({ err: 'Listing not found' }));
+});
+
+// @route GET api/listings/recommended/:user_id
+// @desc Get recommended listings for a user
+// @access Private
+router.get('/recommended/:user_id', (req, res) => {
+  User.findById(req.params.match.user_id).then((user) => {
+    // Dont make recommendations if user browsed less than 3 listings
+    if (user.browsing_history.length < 3) {
+      Listing.find()
+        .sort({ times_viewed: 'descending' })
+        .then((listings) => res.json(listings));
+    }
+
+    let counter = { makes: [], models: [], years: [] };
+
+    user.browsing_history.forEach((entry) => {
+      let id = entry.id;
+
+      Listing.findById(id).then((listing) => {
+        counter.makes.push(listing.car.make);
+        counter.models.push(listing.car.model);
+        counter.years.push(listing.car.year);
+      });
+    });
+
+    console.log(counter);
+
+    res.json({ counter });
+  });
 });
 
 // @route POST api/listings
