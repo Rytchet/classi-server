@@ -10,10 +10,18 @@ const User = require('../../models/User');
 // @desc Get all listings
 // @access Public
 router.get('/', (req, res) => {
+  req_query = req.query;
   query = {};
-  if (req.query.user_id) {
-    query = { user_id: req.query.user_id };
-  }
+
+  Object.keys(req_query).forEach((key) => {
+    if (!isNaN(req_query[key])) {
+      query[key] = parseInt(req_query[key]);
+      return;
+    }
+    query[key] = { $regex: req_query[key], $options: 'i' };
+  });
+
+  console.log(query);
 
   Listing.find(query)
     .sort({ date: -1 }) // Sort by date descending
