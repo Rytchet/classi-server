@@ -79,7 +79,7 @@ router.get('/recommended/:user_id', (req, res) => {
           let model = mode(counter.models);
           let year = mode(counter.years);
 
-          recommendations = [];
+          let recommendations = [];
 
           let listing = await Listing.find({ 'car.make': make })
             .sort({ times_viewed: -1 })
