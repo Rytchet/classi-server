@@ -48,6 +48,7 @@ router.get('/recommended/:user_id', (req, res) => {
     if (user.browsing_history.length < 3) {
       Listing.find()
         .sort({ times_viewed: 'descending' })
+        .limit(3)
         .then((listings) => res.json(listings));
     }
 
@@ -57,7 +58,7 @@ router.get('/recommended/:user_id', (req, res) => {
     user.browsing_history.forEach((entry) => {
       let id = entry._id;
 
-      Listing.findById(id).then((listing) => {
+      Listing.findById(id).then(async function (listing) {
         counter.makes.push(listing.car.make);
         counter.models.push(listing.car.model);
         counter.years.push(listing.car.year);
@@ -78,7 +79,27 @@ router.get('/recommended/:user_id', (req, res) => {
           let model = mode(counter.models);
           let year = mode(counter.years);
 
-          // TODO: Get three listings from these and res.json() them
+          recommendations = [];
+
+          let listing = await Listing.find({ 'car.make': make })
+            .sort({ times_viewed: -1 })
+            .limit(1);
+          recommendations.push(...listing);
+
+          listing = await Listing.find({ 'car.model': model })
+            .sort({ times_viewed: -1 })
+            .limit(1);
+          recommendations.push(...listing);
+
+          listing = await Listing.find({
+            'car.year': { $lte: year + 5 },
+            'car.year': { $gte: year - 5 },
+          })
+            .sort({ times_viewed: -1 })
+            .limit(1);
+          recommendations.push(...listing);
+
+          res.json(recommendations);
         }
       });
     });
