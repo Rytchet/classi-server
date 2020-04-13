@@ -42,9 +42,30 @@ router.get('/popular', (req, res) => {
 // @desc Search listings
 // @access Public
 router.get('/search', (req, res) => {
-  Listing.find({ $text: { $search: req.query.q } })
-    .sort({ creation_date: 'descending' })
-    .then((listings) => res.json(listings));
+  if (req.query.q) {
+    Listing.find({ $text: { $search: req.query.q } })
+      .sort({ creation_date: 'descending' })
+      .then((listings) => res.json(listings));
+  } else {
+    req_query = req.query;
+    query = {};
+
+    Object.keys(req_query).forEach((key) => {
+      if (req_query[key] == '') return;
+      if (!isNaN(req_query[key])) {
+        query[key] = parseInt(req_query[key]);
+        return;
+      }
+      query[key] = { $regex: req_query[key], $options: 'i' };
+    });
+
+    console.log(query);
+
+    Listing.find(query)
+      .sort({ date: -1 }) // Sort by date descending
+      .then((listings) => res.json(listings))
+      .catch((err) => res.status(404).json({ err: 'No listings found' }));
+  }
 });
 
 // @route GET api/listings/recommended/:user_id
