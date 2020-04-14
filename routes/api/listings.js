@@ -21,8 +21,6 @@ router.get('/', (req, res) => {
     query[key] = { $regex: req_query[key], $options: 'i' };
   });
 
-  console.log(query);
-
   Listing.find(query)
     .sort({ date: -1 }) // Sort by date descending
     .then((listings) => res.json(listings))
@@ -113,12 +111,12 @@ router.get('/recommended/:user_id', (req, res) => {
           let listing = await Listing.find({ 'car.make': make })
             .sort({ times_viewed: -1 })
             .limit(1);
-          recommendations.push(...listing);
+          await recommendations.push(...listing);
 
           listing = await Listing.find({ 'car.model': model })
             .sort({ times_viewed: -1 })
             .limit(1);
-          recommendations.push(...listing);
+          await recommendations.push(...listing);
 
           listing = await Listing.find({
             'car.year': { $lte: year + 5 },
@@ -126,7 +124,7 @@ router.get('/recommended/:user_id', (req, res) => {
           })
             .sort({ times_viewed: -1 })
             .limit(1);
-          recommendations.push(...listing);
+          await recommendations.push(...listing);
 
           res.json(recommendations);
         }
@@ -165,6 +163,24 @@ router.get('/:id', (req, res) => {
       listing.times_viewed = listing.times_viewed + 1;
       listing.save();
       res.json(listing);
+    })
+    .catch((err) => res.status(404).json({ err: 'Listing not found' }));
+});
+
+// @route GET api/listings/:id/
+// @desc Get a listing
+// @access Public
+router.put('/:id', auth, (req, res) => {
+  Listing.findById(req.params.id)
+    .then((listing) => {
+      listing.title = req.body.title;
+      listing.price = req.body.price;
+      listing.description = req.body.description;
+      listing.car.make = req.body.car.make;
+      listing.car.model = req.body.car.model;
+      listing.car.year = req.body.car.year;
+      listing.car.mileage = req.body.car.mileage;
+      listing.save();
     })
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
 });
