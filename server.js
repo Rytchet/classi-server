@@ -23,10 +23,10 @@ mongoose
     // These options are for fixing deprecation warnings for mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => console.log('Connected to database'))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 // // Passport middleware
 // app.use(passport.initialize());

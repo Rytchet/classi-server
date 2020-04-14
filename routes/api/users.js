@@ -87,6 +87,14 @@ router.get('/:id', (req, res) => {
   User.findById(req.params.id).then((user) => res.json(user));
 });
 
+router.put('/:id', (req, res) => {
+  User.findById(req.params.id).then((user) => {
+    user.name = req.body.name;
+    user.save();
+    res.json(user);
+  });
+});
+
 // @route PUT api/users/favorites/:listingId
 // @desc Favorite a listing
 // @access Private
