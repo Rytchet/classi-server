@@ -149,7 +149,7 @@ router.get('/:id/:user_id', (req, res) => {
 
       listing.times_viewed = listing.times_viewed + 1;
       listing.save();
-      res.json(listing);
+      res.json({ listing });
     })
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
 });
@@ -180,7 +180,7 @@ router.put('/:id', auth, (req, res) => {
       listing.car.model = req.body.car.model;
       listing.car.year = req.body.car.year;
       listing.car.mileage = req.body.car.mileage;
-      listing.save();
+      listing.save().then((l) => res.json(l));
     })
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
 });
