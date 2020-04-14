@@ -149,7 +149,7 @@ router.get('/:id/:user_id', (req, res) => {
 
       listing.times_viewed = listing.times_viewed + 1;
       listing.save();
-      res.json({ listing });
+      res.json(listing);
     })
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
 });
