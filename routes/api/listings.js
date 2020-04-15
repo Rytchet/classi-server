@@ -39,25 +39,38 @@ router.get('/popular', (req, res) => {
 // @route GET api/listings/search
 // @desc Search listings
 // @access Public
-router.get('/search', (req, res) => {
-  if (req.query.q) {
-    Listing.find({ $text: { $search: req.query.q } })
+router.put('/search', (req, res) => {
+  if (req.body.q) {
+    Listing.find({ $text: { $search: req.body.q } })
       .sort({ creation_date: 'descending' })
       .then((listings) => res.json(listings));
   } else {
-    req_query = req.query;
-    query = {};
+    let req_query = req.body;
+    let query = {};
 
     Object.keys(req_query).forEach((key) => {
       if (req_query[key] == '') return;
-      if (!isNaN(req_query[key])) {
+      else if (!isNaN(req_query[key])) {
         query[key] = parseInt(req_query[key]);
         return;
+      } else if (typeof req_query[key] == 'string') {
+        query[key] = { $regex: req_query[key], $options: 'i' };
+        return;
+      } else if (req_query[key]['$lt'] == '' && req_query[key]['$gt'] == '') {
+        return;
+      } else if (req_query[key]['$lt'] != '') {
+        query[key] = {};
+        query[key]['$lt'] = parseInt(req_query[key]['$lt']);
+        if (req_query[key]['$gt'] != '') {
+          query[key]['$gt'] = parseInt(req_query[key]['$gt']);
+        }
+      } else if (req_query[key]['$gt'] != '') {
+        query[key] = {};
+        query[key]['$gt'] = parseInt(req_query[key]['$gt']);
+      } else {
+        query[key] = req_query[key];
       }
-      query[key] = { $regex: req_query[key], $options: 'i' };
     });
-
-    console.log(query);
 
     Listing.find(query)
       .sort({ date: -1 }) // Sort by date descending
