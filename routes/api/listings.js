@@ -87,7 +87,7 @@ router.put('/search', (req, res) => {
 // @desc Get recommended listings for a user
 // @access Private
 router.get('/recommended/:user_id', (req, res) => {
-  User.findById(req.params.user_id).then((user) => {
+  User.findById(req.params.user_id).then(async function (user) {
     // Dont make recommendations if user browsed less than 3 listings
     if (user.browsing_history.length < 3) {
       Listing.find()
@@ -98,6 +98,11 @@ router.get('/recommended/:user_id', (req, res) => {
 
     let counter = { makes: [], models: [], years: [] };
     let i = 0;
+
+    let mostViewed = await Listing.find()
+      .sort({ times_viewed: 'descending' })
+      .limit(1)
+      .then((listings) => listings);
 
     user.browsing_history.forEach((entry) => {
       let id = entry._id;
@@ -131,15 +136,19 @@ router.get('/recommended/:user_id', (req, res) => {
           await recommendations.push(...listing);
 
           listing = await Listing.find({ 'car.model': model })
-            .sort({ times_viewed: -1 })
+            .sort({ creation_date: -1 })
             .limit(1);
-          await recommendations.push(...listing);
+          if (listing[0]._id == recommendations[0]._id) {
+            await recommendations.push(mostViewed);
+          } else {
+            await recommendations.push(...listing);
+          }
 
           listing = await Listing.find({
             'car.year': { $lte: year + 5 },
             'car.year': { $gte: year - 5 },
           })
-            .sort({ times_viewed: -1 })
+            .sort({ creation_date: -1 })
             .limit(1);
           await recommendations.push(...listing);
 
