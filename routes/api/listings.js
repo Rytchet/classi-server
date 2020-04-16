@@ -13,13 +13,17 @@ router.get('/', (req, res) => {
   req_query = req.query;
   query = {};
 
-  Object.keys(req_query).forEach((key) => {
-    if (!isNaN(req_query[key])) {
-      query[key] = parseInt(req_query[key]);
-      return;
-    }
-    query[key] = { $regex: req_query[key], $options: 'i' };
-  });
+  if (req.query.user_id) {
+    query = { user_id: req.query.user_id };
+  } else {
+    Object.keys(req_query).forEach((key) => {
+      if (!isNaN(req_query[key])) {
+        query[key] = parseInt(req_query[key]);
+        return;
+      }
+      query[key] = { $regex: req_query[key], $options: 'i' };
+    });
+  }
 
   Listing.find(query)
     .sort({ date: -1 }) // Sort by date descending
