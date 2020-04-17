@@ -87,76 +87,83 @@ router.put('/search', (req, res) => {
 // @desc Get recommended listings for a user
 // @access Private
 router.get('/recommended/:user_id', (req, res) => {
-  User.findById(req.params.user_id).then(async function (user) {
-    // Dont make recommendations if user browsed less than 3 listings
-    if (user.browsing_history.length < 3) {
+  User.findById(req.params.user_id)
+    .then(async function (user) {
+      // Dont make recommendations if user browsed less than 3 listings
+      if (user.browsing_history.length < 3) {
+        Listing.find()
+          .sort({ times_viewed: 'descending' })
+          .limit(3)
+          .then((listings) => res.json(listings));
+      }
+
+      let counter = { makes: [], models: [], years: [] };
+      let i = 0;
+
+      let mostViewed = await Listing.find()
+        .sort({ times_viewed: 'descending' })
+        .limit(1)
+        .then((listings) => listings);
+
+      user.browsing_history.forEach((entry) => {
+        let id = entry._id;
+
+        Listing.findById(id).then(async function (listing) {
+          counter.makes.push(listing.car.make);
+          counter.models.push(listing.car.model);
+          counter.years.push(listing.car.year);
+          i += 1;
+
+          if (i == user.browsing_history.length - 1) {
+            function mode(arr) {
+              return arr
+                .sort(
+                  (a, b) =>
+                    arr.filter((v) => v === a).length -
+                    arr.filter((v) => v === b).length
+                )
+                .pop();
+            }
+
+            let make = mode(counter.makes);
+            let model = mode(counter.models);
+            let year = mode(counter.years);
+
+            let recommendations = [];
+
+            let listing = await Listing.find({ 'car.make': make })
+              .sort({ times_viewed: -1 })
+              .limit(1);
+            await recommendations.push(...listing);
+
+            listing = await Listing.find({ 'car.model': model })
+              .sort({ creation_date: -1 })
+              .limit(1);
+            if (listing[0]._id == recommendations[0]._id) {
+              await recommendations.push(mostViewed);
+            } else {
+              await recommendations.push(...listing);
+            }
+
+            listing = await Listing.find({
+              'car.year': { $lte: year + 5 },
+              'car.year': { $gte: year - 5 },
+            })
+              .sort({ creation_date: -1 })
+              .limit(1);
+            await recommendations.push(...listing);
+
+            res.json(recommendations);
+          }
+        });
+      });
+    })
+    .catch((err) => {
       Listing.find()
         .sort({ times_viewed: 'descending' })
         .limit(3)
         .then((listings) => res.json(listings));
-    }
-
-    let counter = { makes: [], models: [], years: [] };
-    let i = 0;
-
-    let mostViewed = await Listing.find()
-      .sort({ times_viewed: 'descending' })
-      .limit(1)
-      .then((listings) => listings);
-
-    user.browsing_history.forEach((entry) => {
-      let id = entry._id;
-
-      Listing.findById(id).then(async function (listing) {
-        counter.makes.push(listing.car.make);
-        counter.models.push(listing.car.model);
-        counter.years.push(listing.car.year);
-        i += 1;
-
-        if (i == user.browsing_history.length - 1) {
-          function mode(arr) {
-            return arr
-              .sort(
-                (a, b) =>
-                  arr.filter((v) => v === a).length -
-                  arr.filter((v) => v === b).length
-              )
-              .pop();
-          }
-
-          let make = mode(counter.makes);
-          let model = mode(counter.models);
-          let year = mode(counter.years);
-
-          let recommendations = [];
-
-          let listing = await Listing.find({ 'car.make': make })
-            .sort({ times_viewed: -1 })
-            .limit(1);
-          await recommendations.push(...listing);
-
-          listing = await Listing.find({ 'car.model': model })
-            .sort({ creation_date: -1 })
-            .limit(1);
-          if (listing[0]._id == recommendations[0]._id) {
-            await recommendations.push(mostViewed);
-          } else {
-            await recommendations.push(...listing);
-          }
-
-          listing = await Listing.find({
-            'car.year': { $lte: year + 5 },
-            'car.year': { $gte: year - 5 },
-          })
-            .sort({ creation_date: -1 })
-            .limit(1);
-          await recommendations.push(...listing);
-
-          res.json(recommendations);
-        }
-      });
     });
-  });
 });
 
 // @route GET api/listings/:id/:user_id
