@@ -301,7 +301,7 @@ router.delete('/:id', auth, (req, res) => {
   Listing.findById(req.params.id)
     .then((listing) => {
       if (
-        listing.user_id != req.user.id ||
+        listing.user_id != req.user.id &&
         req.user.email != 'admin@classi.com'
       ) {
         res.status(403).json({ success: false, msg: 'Not authorized' });
