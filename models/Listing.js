@@ -66,6 +66,10 @@ const ListingSchema = new Schema({
       required: true,
     },
   },
+  reported: {
+    type: Boolean,
+    default: false,
+  },
   times_viewed: {
     type: Number,
     default: 0,

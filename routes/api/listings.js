@@ -166,6 +166,33 @@ router.get('/recommended/:user_id', (req, res) => {
     });
 });
 
+router.put('/report/:id', (req, res) => {
+  Listing.findById(req.params.id)
+    .then((listing) => {
+      listing.reported = true;
+      listing.save();
+      res.json({ msg: 'Success' });
+    })
+    .catch((e) => {
+      res.status(404).json({ msg: 'Listing not found' });
+    });
+});
+
+router.put('/approve/:id', auth, (req, res) => {
+  if (req.user.email != 'admin@classi.com') {
+    res.status(403).json({ msg: 'Not authorised (need admin)' });
+  }
+  Listing.findById(req.params.id)
+    .then((listing) => {
+      listing.reported = false;
+      listing.save();
+      res.json({ msg: 'Success' });
+    })
+    .catch((e) => {
+      res.status(404).json({ msg: 'Listing not found' });
+    });
+});
+
 // @route GET api/listings/:id/:user_id
 // @desc Get a listing with user
 // @access Public
@@ -224,8 +251,8 @@ router.put('/:id', auth, (req, res) => {
 router.post('/', auth, (req, res) => {
   const { title, price, description } = req.body;
   const { make, model, year, mileage } = req.body.car;
-
   const postcode = req.body.location.postcode;
+
   let region, city, lat, long;
 
   const phone = req.body.phone || req.user.phone;
@@ -273,7 +300,10 @@ router.post('/', auth, (req, res) => {
 router.delete('/:id', auth, (req, res) => {
   Listing.findById(req.params.id)
     .then((listing) => {
-      if (listing.user_id != req.user.id) {
+      if (
+        listing.user_id != req.user.id &&
+        req.user.email != 'admin@classi.com'
+      ) {
         res.status(403).json({ success: false, msg: 'Not authorized' });
       }
       listing.remove().then(() => res.json({ success: true })); // Return a 200 OK
