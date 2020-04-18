@@ -60,17 +60,17 @@ router.put('/search', (req, res) => {
       } else if (typeof req_query[key] == 'string') {
         query[key] = { $regex: req_query[key], $options: 'i' };
         return;
-      } else if (req_query[key]['$lt'] == '' && req_query[key]['$gt'] == '') {
+      } else if (req_query[key]['$lte'] == '' && req_query[key]['$gte'] == '') {
         return;
-      } else if (req_query[key]['$lt'] != '') {
+      } else if (req_query[key]['$lte'] != '') {
         query[key] = {};
-        query[key]['$lt'] = parseInt(req_query[key]['$lt']);
-        if (req_query[key]['$gt'] != '') {
-          query[key]['$gt'] = parseInt(req_query[key]['$gt']);
+        query[key]['$lte'] = parseInt(req_query[key]['$lte']);
+        if (req_query[key]['$gte'] != '') {
+          query[key]['$gte'] = parseInt(req_query[key]['$gte']);
         }
-      } else if (req_query[key]['$gt'] != '') {
+      } else if (req_query[key]['$gte'] != '') {
         query[key] = {};
-        query[key]['$gt'] = parseInt(req_query[key]['$gt']);
+        query[key]['$gte'] = parseInt(req_query[key]['$gte']);
       } else {
         query[key] = req_query[key];
       }
