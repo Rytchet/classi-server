@@ -249,7 +249,6 @@ router.put('/:id', auth, (req, res) => {
 // @desc Create a listing
 // @access Private
 router.post('/', auth, (req, res) => {
-  console.log(req);
   const { title, price, description } = req.body;
   const { make, model, year, mileage } = req.body.car;
   const postcode = req.body.location.postcode;
