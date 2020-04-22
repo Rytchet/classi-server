@@ -55,6 +55,7 @@ const singleUpload = uploadAvatar.single('avatar');
 router.post('/avatars', auth, (req, res) => {
   singleUpload(req, res, function (err) {
     if (err) {
+      console.log(err);
       return res
         .status(422)
         .json({ msg: 'Image upload error', detail: err.message });

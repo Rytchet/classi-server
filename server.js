@@ -29,12 +29,6 @@ mongoose
   .then(() => console.log('Connected to database'))
   .catch((err) => console.log(err));
 
-// // Passport middleware
-// app.use(passport.initialize());
-
-// // Passport config
-// require("./config/passport")(passport);
-
 // Use public dir
 app.use('/images', express.static(__dirname + '/public/images'));
 

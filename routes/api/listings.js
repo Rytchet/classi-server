@@ -306,7 +306,10 @@ router.post('/', auth, (req, res) => {
 
       newListing.save().then((listing) => res.json(listing));
     })
-    .catch((err) => res.status(400).json({ msg: 'Wrong postcode' }));
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ msg: 'Wrong postcode' });
+    });
 });
 
 // @route DELETE api/listings/:id
