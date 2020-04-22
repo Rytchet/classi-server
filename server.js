@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const config = require('config');
 const cors = require('cors');
-// const passport = require("passport");
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // DB Config
-const uri = config.get('mongoURI');
+const uri = process.env.mongoURI;
 
 // Connect to Mongoose
 // TODO: Allow only safe IP's to access the database. Change this in the Security/Network Access section in MongoDB Atlas
