@@ -22,8 +22,6 @@ aws.config.update({
   region: 'eu-west-2',
 });
 
-console.log(process.env.S3_KEY);
-
 const s3 = new aws.S3();
 
 const fileFilter = (req, file, cb) => {
