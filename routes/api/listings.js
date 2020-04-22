@@ -175,6 +175,9 @@ router.get('/recommended/:user_id', (req, res) => {
     });
 });
 
+// @route GET api/listings/report/:listing_id
+// @desc Report a listing
+// @access Public
 router.put('/report/:id', (req, res) => {
   Listing.findById(req.params.id)
     .then((listing) => {
@@ -187,6 +190,9 @@ router.put('/report/:id', (req, res) => {
     });
 });
 
+// @route GET api/listings/approve/:listing_id
+// @desc Approve a listing
+// @access Private (Admin)
 router.put('/approve/:id', auth, (req, res) => {
   if (req.user.email != 'admin@classi.com') {
     res.status(403).json({ msg: 'Not authorised (need admin)' });
@@ -236,9 +242,9 @@ router.get('/:id', (req, res) => {
     .catch((err) => res.status(404).json({ err: 'Listing not found' }));
 });
 
-// @route GET api/listings/:id/
-// @desc Get a listing
-// @access Public
+// @route PUT api/listings/:id/
+// @desc Update a listing
+// @access Private
 router.put('/:id', auth, (req, res) => {
   Listing.findById(req.params.id)
     .then((listing) => {

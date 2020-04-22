@@ -63,16 +63,14 @@ router.post('/', (req, res) => {
   });
 });
 
-// TODO: Implement this better, don't send all info
-
-// @route GET api/users
+// @route GET api/users/:id/profile
 // @desc Get the profile of a user
 // @access Public
 router.get('/:id/profile', (req, res) => {
   User.findById(req.params.id).then((user) => res.json(user));
 });
 
-// TODO: Delete this, not secure
+// Temporary
 // @route GET api/users
 // @desc Get all users
 // @access Public
@@ -87,6 +85,9 @@ router.get('/:id', (req, res) => {
   User.findById(req.params.id).then((user) => res.json(user));
 });
 
+// @route PUT api/users/:id
+// @desc Update a user
+// @access Private
 router.put('/:id', (req, res) => {
   User.findById(req.params.id).then((user) => {
     user.name = req.body.name;
