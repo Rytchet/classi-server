@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Models
 const User = require('../../models/User');
@@ -15,10 +17,12 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 
 aws.config.update({
-  secretAccessKey: 'QnXCsFMhuhasj4GAP54yjRnIjj2HMh5hbvfKY0RK',
-  accessKeyId: 'AKIAJ2Q2W3AUGNUXJ5YQ',
+  secretAccessKey: process.env.S3_SECRET,
+  accessKeyId: process.env.S3_KEY,
   region: 'eu-west-2',
 });
+
+console.log(process.env.S3_KEY);
 
 const s3 = new aws.S3();
 
